@@ -22,7 +22,7 @@ cd test-ss
 ```bash
 python -m venv venv
 # On Windows:
-.\venv\Scripts\activate
+./venv/Scripts/activate
 # On Unix or MacOS:
 source venv/bin/activate
 ```
@@ -87,15 +87,23 @@ The application includes a management command to import POI data from various fi
 - XML Format:
 
   ```xml
-  <poi>
-    <pid>...</pid>
-    <pname>...</pname>
-    <platitude>...</platitude>
-    <plongitude>...</plongitude>
-    <pcategory>...</pcategory>
-    <pratings>[...]</pratings>
-  </poi>
+  <RECORDS>
+    <DATA_RECORD>
+      <pid>123456789</pid>
+      <pname>Point of Interest Name</pname>
+      <platitude>48.8566</platitude>
+      <plongitude>2.3522</plongitude>
+      <pcategory>restaurant</pcategory>
+      <pratings>1,2,3,4,5</pratings>
+    </DATA_RECORD>
+  </RECORDS>
   ```
+
+  Notes:
+  - The XML importer handles special characters (like &, <, >) automatically
+  - Ratings should be comma-separated integers
+  - Coordinates must be valid decimal degrees
+  - Categories should match the supported types (e.g., restaurant, park, bus-stop)
 
 ### Import Command Usage
 
@@ -108,19 +116,18 @@ You can import multiple files at once by providing multiple file paths.
 ## Features
 
 1. **Data Import**
+   - CSV, JSON, and XML format support
+   - Single or multiple POI import
+   - Data validation and conversion
+   - Unicode character support
+   - Duplicate handling
 
-   - Support for CSV, JSON, and XML file formats
-   - Handles both single and multiple POI entries
-   - Automatic data validation and type conversion
 2. **Admin Interface**
-
-   - Display of POI internal ID
-   - POI name
-   - POI external ID
-   - POI category
-   - Average rating calculation
-   - Search functionality for internal and external IDs
-   - Category filtering
+   - POI listing and details view
+   - Search and filtering
+   - Average rating display
+   - Category management
+   - Coordinate validation
 
 ## Project Structure
 
@@ -183,36 +190,28 @@ coverage report
 
 ## Implementation Details
 
-- Uses Django's built-in admin interface for data visualization
-- Implements custom management command for data import
-- Uses SQLite as the database (can be easily changed to other databases)
-- Includes data validation for coordinates and ratings
-- Provides efficient database indexing for search operations
+### Core Features
+- Django admin interface for POI management
+- Command-line data import tool
+- SQLite database storage
+- Coordinate and rating validation
+- Database indexing for performance
 
-## Assumptions Made
+### Data Import
+- Supports CSV, JSON, and XML formats
+- Handles Unicode and special characters
+- Prevents duplicate entries
+- Validates data before import
+- Supports multiple file import
 
-1. POI ratings are stored as JSON arrays in the database
-2. External IDs are unique across all data sources
-3. Coordinates are provided in decimal degrees format
-4. File encodings are UTF-8
-5. Rating values are numeric
+### Data Validation
+- Latitude range: -90 to 90
+- Longitude range: -180 to 180
+- Unique external IDs
+- UTF-8 file encoding
+- Numeric rating values
 
-## Potential Improvements
-
-1. Add API endpoints for programmatic access to POI data
-2. Implement batch processing for large data files
-3. Add data export functionality
-4. Add more detailed validation for imported data
-5. Implement caching for frequently accessed data
-6. Add unit tests and integration tests
-7. Add user authentication and authorization beyond admin interface
-8. Add support for more file formats
-9. Implement geographic queries and proximity search
-10. Add data versioning and history tracking
-
-## Security Considerations
-
-- Admin interface is password protected
-- Input data is validated before storage
-- Database credentials are not exposed in version control
-- File uploads are validated for format and content
+## Security
+- Password-protected admin interface
+- Input validation
+- Secure credential handling

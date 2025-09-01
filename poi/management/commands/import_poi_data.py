@@ -1,7 +1,8 @@
 import csv
 import json
-import xmltodict
+import xml.etree.ElementTree as ET
 from pathlib import Path
+from xml.etree.ElementTree import XMLParser
 from django.core.management.base import BaseCommand, CommandError
 from poi.models import PointOfInterest
 
@@ -66,20 +67,24 @@ class Command(BaseCommand):
                 )
 
     def import_xml(self, file_path):
+        # Read file content and replace problematic characters
         with open(file_path, 'r', encoding='utf-8') as f:
-            data = xmltodict.parse(f.read())
-            pois = data.get('pois', {}).get('poi', [])
-            if isinstance(pois, dict):
-                pois = [pois]
-            
-            for poi in pois:
-                PointOfInterest.objects.update_or_create(
-                    external_id=poi['pid'],
-                    defaults={
-                        'name': poi['pname'],
-                        'latitude': float(poi['platitude']),
-                        'longitude': float(poi['plongitude']),
-                        'category': poi['pcategory'],
-                        'ratings': json.loads(poi['pratings'])
-                    }
-                )
+            content = f.read()
+            content = content.replace('&', '&amp;')  # Pre-escape ampersands
+        
+        # Parse with a custom parser
+        parser = XMLParser(encoding='utf-8')
+        root = ET.fromstring(content, parser=parser)
+        
+        for record in root.findall('DATA_RECORD'):
+            ratings = [int(x) for x in record.find('pratings').text.split(',') if x]
+            PointOfInterest.objects.update_or_create(
+                external_id=record.find('pid').text,
+                defaults={
+                    'name': record.find('pname').text,
+                    'latitude': float(record.find('platitude').text),
+                    'longitude': float(record.find('plongitude').text),
+                    'category': record.find('pcategory').text,
+                    'ratings': ratings
+                }
+            )
