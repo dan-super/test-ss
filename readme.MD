@@ -13,7 +13,7 @@ A Django application that manages Points of Interest (POI) data from various fil
 1. Clone the repository:
 
 ```bash
-git clone git@github.com:dan-super/test-ss.git
+git clone https://github.com/dan-super/test-ss.git
 cd test-ss
 ```
 
@@ -156,13 +156,14 @@ python manage.py test poi.tests
 The test suite includes:
 
 1. **Model Tests**
+
    - POI creation and validation
    - Coordinate validation (latitude/longitude bounds)
    - Average rating calculation
    - Unicode character handling
    - Duplicate external ID prevention
-
 2. **Import Tests**
+
    - JSON data import validation
    - Data format handling
    - Error handling for invalid data
