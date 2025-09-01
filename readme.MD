@@ -21,8 +21,10 @@ cd test-ss
 
 ```bash
 python -m venv venv
+
 # On Windows:
 ./venv/Scripts/activate
+
 # On Unix or MacOS:
 source venv/bin/activate
 ```
@@ -33,23 +35,24 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-4. Apply database migrations:
+4. Set up the database:
 
 ```bash
 python manage.py migrate
 ```
 
-5. Create a superuser for admin access:
+5. Create an admin user:
 
 ```bash
 python manage.py createsuperuser
-# Use these credentials for development:
-# Username: admin
-# Email: admin@example.com
-# Password: admin123!
 ```
 
-Note: For production environments, always use strong, unique passwords.
+Recommended development credentials:
+- Username: admin
+- Email: admin@example.com
+- Password: admin123!
+
+Note: Use strong, unique passwords in production environments.
 
 ## Running the Application
 
@@ -100,6 +103,7 @@ The application includes a management command to import POI data from various fi
   ```
 
   Notes:
+
   - The XML importer handles special characters (like &, <, >) automatically
   - Ratings should be comma-separated integers
   - Coordinates must be valid decimal degrees
@@ -113,16 +117,23 @@ python manage.py import_poi_data path/to/file.csv path/to/file.json path/to/file
 
 You can import multiple files at once by providing multiple file paths.
 
+For example, if you want to import the files inside `examples` folder, you can run:
+
+```bash
+python manage.py import_poi_data ./examples/pois.xml ./examples/pois.json
+```
+
 ## Features
 
 1. **Data Import**
+
    - CSV, JSON, and XML format support
    - Single or multiple POI import
    - Data validation and conversion
    - Unicode character support
    - Duplicate handling
-
 2. **Admin Interface**
+
    - POI listing and details view
    - Search and filtering
    - Average rating display
@@ -191,6 +202,7 @@ coverage report
 ## Implementation Details
 
 ### Core Features
+
 - Django admin interface for POI management
 - Command-line data import tool
 - SQLite database storage
@@ -198,6 +210,7 @@ coverage report
 - Database indexing for performance
 
 ### Data Import
+
 - Supports CSV, JSON, and XML formats
 - Handles Unicode and special characters
 - Prevents duplicate entries
@@ -205,6 +218,7 @@ coverage report
 - Supports multiple file import
 
 ### Data Validation
+
 - Latitude range: -90 to 90
 - Longitude range: -180 to 180
 - Unique external IDs
@@ -212,6 +226,7 @@ coverage report
 - Numeric rating values
 
 ## Security
+
 - Password-protected admin interface
 - Input validation
 - Secure credential handling

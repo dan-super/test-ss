@@ -72,7 +72,6 @@ class Command(BaseCommand):
             content = f.read()
             content = content.replace('&', '&amp;')  # Pre-escape ampersands
         
-        # Parse with a custom parser
         parser = XMLParser(encoding='utf-8')
         root = ET.fromstring(content, parser=parser)
         
