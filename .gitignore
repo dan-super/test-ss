@@ -43,3 +43,6 @@ env/
 Thumbs.db
 
 examples/pois.csv
+
+# Test Coerage Report
+.coverage

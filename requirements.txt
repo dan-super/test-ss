@@ -1,4 +1,5 @@
 Django>=4.2.0
 python-dotenv>=1.0.0
-pandas>=2.0.0  # For CSV handling
-xmltodict>=0.13.0  # For XML parsing
+pandas>=2.0.0
+xmltodict>=0.13.0
+coverage>=7.4.0

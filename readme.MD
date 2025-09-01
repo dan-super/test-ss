@@ -13,8 +13,8 @@ A Django application that manages Points of Interest (POI) data from various fil
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
-cd SearchSmartly
+git clone git@github.com:dan-super/test-ss.git
+cd test-ss
 ```
 
 2. Create and activate a virtual environment:
@@ -43,7 +43,13 @@ python manage.py migrate
 
 ```bash
 python manage.py createsuperuser
+# Use these credentials for development:
+# Username: admin
+# Email: admin@example.com
+# Password: admin123!
 ```
+
+Note: For production environments, always use strong, unique passwords.
 
 ## Running the Application
 
@@ -131,6 +137,47 @@ SearchSmartly/
 ├── poi_manager/           # Project settings directory
 ├── requirements.txt       # Project dependencies
 └── manage.py             # Django management script
+```
+
+## Testing
+
+The application includes a comprehensive test suite that covers core functionality:
+
+```bash
+# Run all tests
+python manage.py test
+
+# Run specific test file
+python manage.py test poi.tests
+```
+
+### Test Coverage
+
+The test suite includes:
+
+1. **Model Tests**
+   - POI creation and validation
+   - Coordinate validation (latitude/longitude bounds)
+   - Average rating calculation
+   - Unicode character handling
+   - Duplicate external ID prevention
+
+2. **Import Tests**
+   - JSON data import validation
+   - Data format handling
+   - Error handling for invalid data
+
+### Running Tests with Coverage Report
+
+```bash
+# Install coverage
+pip install coverage
+
+# Run tests with coverage
+coverage run manage.py test
+
+# Generate coverage report
+coverage report
 ```
 
 ## Implementation Details
